@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 	"os"
 	"time"
 
@@ -10,25 +11,41 @@ import (
 
 type Station interface {
 	Name() string
-	CurrentTrack() string
+	CurrentTrack(time.Time) string
 }
 
 type staticStation struct {
 	name         string
 	currentTrack string
+	duration     time.Duration
+	endsAt       time.Time
 }
 
 func (s staticStation) Name() string {
 	return s.name
 }
 
-func (s staticStation) CurrentTrack() string {
-	return s.currentTrack
+func (s staticStation) CurrentTrack(now time.Time) string {
+	return fmt.Sprintf(
+		"%s (%s / %s)",
+		s.currentTrack,
+		displayTime(s.endsAt.Sub(now)),
+		displayTime(s.duration),
+	)
+}
+
+func displayTime(left time.Duration) string {
+	return fmt.Sprintf(
+		"%02.f:%02.f",
+		math.Floor(left.Minutes()),
+		math.Mod(left.Seconds(), 60),
+	)
+
 }
 
 type Stations []Station
 
-type tickMsg float64
+type tickMsg time.Time
 
 var programStartedAt = time.Now()
 
@@ -37,7 +54,7 @@ type model struct {
 	cursor   int
 	selected int
 
-	lastTick float64
+	lastTick time.Time
 }
 
 func (m model) Init() tea.Cmd {
@@ -64,7 +81,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		}
 
 	case tickMsg:
-		m.lastTick = float64(msg)
+		m.lastTick = time.Time(msg)
 		return m, tick()
 	}
 
@@ -72,7 +89,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m model) View() string {
-	s := fmt.Sprintf("Station list (%f)\n\n", m.lastTick)
+	s := "Station list\n\n"
 
 	for i, choice := range m.choices {
 		cursor := " "
@@ -85,7 +102,13 @@ func (m model) View() string {
 			checked = "x"
 		}
 
-		s += fmt.Sprintf("%s [%s] %s\n", cursor, checked, choice.Name())
+		s += fmt.Sprintf(
+			"%s [%s] %s\t%s\n",
+			cursor,
+			checked,
+			choice.Name(),
+			choice.CurrentTrack(m.lastTick),
+		)
 	}
 
 	s += "\nPress q to quit.\n"
@@ -95,10 +118,23 @@ func (m model) View() string {
 
 var initialModel = model{
 	choices: Stations{
-		staticStation{name: "DPark"},
-		staticStation{name: "Sorcerer"},
-		staticStation{name: "WDWNT"},
+		staticStation{
+			name:     "DPark",
+			endsAt:   time.Now().Add(time.Minute),
+			duration: time.Minute * 2,
+		},
+		staticStation{
+			name:     "Sorcerer",
+			endsAt:   time.Now().Add(time.Minute).Add(13 * time.Second),
+			duration: time.Minute*2 + time.Second*23,
+		},
+		staticStation{
+			name:     "WDWNT",
+			endsAt:   time.Now().Add(time.Minute).Add(3 * time.Second),
+			duration: time.Minute*2 + time.Second*32,
+		},
 	},
+	lastTick: time.Now(),
 }
 
 func main() {
@@ -111,6 +147,6 @@ func main() {
 
 func tick() tea.Cmd {
 	return tea.Tick(time.Second, func(t time.Time) tea.Msg {
-		return tickMsg(t.Sub(programStartedAt).Seconds())
+		return tickMsg(t)
 	})
 }
