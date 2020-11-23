@@ -31,11 +31,16 @@ func (m model) View() string {
 		s.WriteString(choice.CurrentTrack())
 		s.WriteString("\t")
 
-		s.WriteString("(")
-		s.WriteString(displayTime(choice.Remaining(m.lastTick)))
-		s.WriteString(" / ")
-		s.WriteString(displayTime(choice.Duration()))
-		s.WriteString(")")
+		remainingTime := choice.Remaining(m.lastTick)
+		if remainingTime < 0 {
+			s.WriteString("(Loading...)")
+		} else {
+			s.WriteString("(")
+			s.WriteString(displayTime(remainingTime))
+			s.WriteString(" / ")
+			s.WriteString(displayTime(choice.Duration()))
+			s.WriteString(")")
+		}
 
 		s.WriteString("\n")
 	}
