@@ -3,24 +3,45 @@ package main
 import (
 	"fmt"
 	"os"
+	"time"
 
 	tea "github.com/charmbracelet/bubbletea"
 )
 
-type Station struct {
-	Name string
+type Station interface {
+	Name() string
+	CurrentTrack() string
+}
+
+type staticStation struct {
+	name         string
+	currentTrack string
+}
+
+func (s staticStation) Name() string {
+	return s.name
+}
+
+func (s staticStation) CurrentTrack() string {
+	return s.currentTrack
 }
 
 type Stations []Station
+
+type tickMsg float64
+
+var programStartedAt = time.Now()
 
 type model struct {
 	choices  Stations
 	cursor   int
 	selected int
+
+	lastTick float64
 }
 
 func (m model) Init() tea.Cmd {
-	return nil
+	return tick()
 }
 
 func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
@@ -42,13 +63,16 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.selected = m.cursor
 		}
 
+	case tickMsg:
+		m.lastTick = float64(msg)
+		return m, tick()
 	}
 
 	return m, nil
 }
 
 func (m model) View() string {
-	s := "Station list\n\n"
+	s := fmt.Sprintf("Station list (%f)\n\n", m.lastTick)
 
 	for i, choice := range m.choices {
 		cursor := " "
@@ -61,7 +85,7 @@ func (m model) View() string {
 			checked = "x"
 		}
 
-		s += fmt.Sprintf("%s [%s] %s\n", cursor, checked, choice.Name)
+		s += fmt.Sprintf("%s [%s] %s\n", cursor, checked, choice.Name())
 	}
 
 	s += "\nPress q to quit.\n"
@@ -71,9 +95,9 @@ func (m model) View() string {
 
 var initialModel = model{
 	choices: Stations{
-		{Name: "DPark"},
-		{Name: "Sorcerer"},
-		{Name: "WDWNT"},
+		staticStation{name: "DPark"},
+		staticStation{name: "Sorcerer"},
+		staticStation{name: "WDWNT"},
 	},
 }
 
@@ -83,4 +107,10 @@ func main() {
 		fmt.Printf("Error starting streamer: %v", err)
 		os.Exit(1)
 	}
+}
+
+func tick() tea.Cmd {
+	return tea.Tick(time.Second, func(t time.Time) tea.Msg {
+		return tickMsg(t.Sub(programStartedAt).Seconds())
+	})
 }
