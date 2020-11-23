@@ -11,7 +11,9 @@ import (
 
 type Station interface {
 	Name() string
-	CurrentTrack(time.Time) string
+	CurrentTrack() string
+	Remaining(time.Time) time.Duration
+	Duration() time.Duration
 }
 
 type staticStation struct {
@@ -25,13 +27,16 @@ func (s staticStation) Name() string {
 	return s.name
 }
 
-func (s staticStation) CurrentTrack(now time.Time) string {
-	return fmt.Sprintf(
-		"%s (%s / %s)",
-		s.currentTrack,
-		displayTime(s.endsAt.Sub(now)),
-		displayTime(s.duration),
-	)
+func (s staticStation) CurrentTrack() string {
+	return s.currentTrack
+}
+
+func (s staticStation) Duration() time.Duration {
+	return s.duration
+}
+
+func (s staticStation) Remaining(now time.Time) time.Duration {
+	return s.endsAt.Sub(now)
 }
 
 func displayTime(left time.Duration) string {
@@ -103,11 +108,13 @@ func (m model) View() string {
 		}
 
 		s += fmt.Sprintf(
-			"%s [%s] %s\t%s\n",
+			"%s [%s] %s\t%s\t(%s / %s)\n",
 			cursor,
 			checked,
 			choice.Name(),
-			choice.CurrentTrack(m.lastTick),
+			choice.CurrentTrack(),
+			displayTime(choice.Remaining(m.lastTick)),
+			displayTime(choice.Duration()),
 		)
 	}
 
@@ -119,19 +126,22 @@ func (m model) View() string {
 var initialModel = model{
 	choices: Stations{
 		staticStation{
-			name:     "DPark",
-			endsAt:   time.Now().Add(time.Minute),
-			duration: time.Minute * 2,
+			name:         "DPark",
+			endsAt:       time.Now().Add(time.Minute),
+			duration:     time.Minute * 2,
+			currentTrack: "Christmas",
 		},
 		staticStation{
-			name:     "Sorcerer",
-			endsAt:   time.Now().Add(time.Minute).Add(13 * time.Second),
-			duration: time.Minute*2 + time.Second*23,
+			name:         "Sorcerer",
+			endsAt:       time.Now().Add(time.Minute).Add(13 * time.Second),
+			duration:     time.Minute*2 + time.Second*23,
+			currentTrack: "Parade",
 		},
 		staticStation{
-			name:     "WDWNT",
-			endsAt:   time.Now().Add(time.Minute).Add(3 * time.Second),
-			duration: time.Minute*2 + time.Second*32,
+			name:         "WDWNT",
+			endsAt:       time.Now().Add(time.Minute).Add(3 * time.Second),
+			duration:     time.Minute*2 + time.Second*32,
+			currentTrack: "EPCOT enterance",
 		},
 	},
 	lastTick: time.Now(),
