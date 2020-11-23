@@ -3,11 +3,13 @@ package main
 import (
 	"fmt"
 	"math"
+	"strings"
 	"time"
 )
 
 func (m model) View() string {
-	s := "Station list\n\n"
+	s := strings.Builder{}
+	s.WriteString("Station list\n\n")
 
 	for i, choice := range m.choices {
 		cursor := " "
@@ -20,24 +22,27 @@ func (m model) View() string {
 			checked = "x"
 		}
 
-		s += fmt.Sprintf(
-			"%s [%s] %s\t%s\t",
-			cursor,
-			checked,
-			choice.Name(),
-			choice.CurrentTrack(),
-		)
+		s.WriteString(cursor)
+		s.WriteString(" [")
+		s.WriteString(checked)
+		s.WriteString("] ")
+		s.WriteString(choice.Name())
+		s.WriteString("\t")
+		s.WriteString(choice.CurrentTrack())
+		s.WriteString("\t")
 
-		s += fmt.Sprintf(
-			"(%s / %s)\n",
-			displayTime(choice.Remaining(m.lastTick)),
-			displayTime(choice.Duration()),
-		)
+		s.WriteString("(")
+		s.WriteString(displayTime(choice.Remaining(m.lastTick)))
+		s.WriteString(" / ")
+		s.WriteString(displayTime(choice.Duration()))
+		s.WriteString(")")
+
+		s.WriteString("\n")
 	}
 
-	s += "\nPress q to quit.\n"
+	s.WriteString("\nPress q to quit.\n")
 
-	return s
+	return s.String()
 }
 
 func displayTime(left time.Duration) string {
