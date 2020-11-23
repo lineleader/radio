@@ -63,3 +63,20 @@ func TestShowRemaining(t *testing.T) {
 
 	assert.Contains(t, actual, "(00:03 /")
 }
+
+func TestShowLoading(t *testing.T) {
+	m := model{
+		choices: Stations{
+			staticStation{
+				name:     "Test",
+				duration: time.Minute,
+				endsAt:   time.Now().Add(-3 * time.Second),
+			},
+		},
+		lastTick: time.Now(),
+	}
+
+	actual := m.View()
+
+	assert.Contains(t, actual, "(Loading...)")
+}
