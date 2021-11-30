@@ -1,26 +1,36 @@
 package main
 
-import "time"
+import (
+	"time"
+
+	"github.com/codegoalie/bubbletea-test/models"
+)
 
 type staticStation struct {
-	name         string
-	currentTrack string
-	duration     time.Duration
-	endsAt       time.Time
+	name string
+	song models.Song
 }
 
-func (s staticStation) Name() string {
+func (s *staticStation) Name() string {
 	return s.name
 }
 
-func (s staticStation) CurrentTrack() string {
-	return s.currentTrack
+func (s *staticStation) CurrentTrack() string {
+	return s.song.Name
 }
 
-func (s staticStation) Duration() time.Duration {
-	return s.duration
+func (s *staticStation) Duration() time.Duration {
+	return s.song.Duration
 }
 
-func (s staticStation) Remaining(now time.Time) time.Duration {
-	return s.endsAt.Sub(now)
+func (s *staticStation) Remaining(now time.Time) time.Duration {
+	return s.song.EndsAt.Sub(now)
+}
+
+func (s *staticStation) Song() *models.Song {
+	return &s.song
+}
+
+func (s *staticStation) SetSong(newSong models.Song) {
+	s.song = newSong
 }

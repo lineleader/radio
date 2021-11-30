@@ -36,8 +36,10 @@ func TestShowDuration(t *testing.T) {
 	m := model{
 		choices: Stations{
 			staticStation{
-				name:     "Test",
-				duration: time.Minute,
+				name: "Test",
+				song: Song{
+					Duration: time.Minute,
+				},
 			},
 		},
 	}
@@ -51,9 +53,11 @@ func TestShowRemaining(t *testing.T) {
 	m := model{
 		choices: Stations{
 			staticStation{
-				name:     "Test",
-				duration: time.Minute,
-				endsAt:   time.Now().Add(3 * time.Second),
+				name: "Test",
+				song: Song{
+					Duration: time.Minute,
+					EndsAt:   time.Now().Add(3 * time.Second),
+				},
 			},
 		},
 		lastTick: time.Now(),
@@ -68,9 +72,11 @@ func TestShowLoading(t *testing.T) {
 	m := model{
 		choices: Stations{
 			staticStation{
-				name:     "Test",
-				duration: time.Minute,
-				endsAt:   time.Now().Add(-3 * time.Second),
+				name: "Test",
+				song: Song{
+					Duration: time.Minute,
+					EndsAt:   time.Now().Add(-3 * time.Second),
+				},
 			},
 		},
 		lastTick: time.Now(),

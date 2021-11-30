@@ -6,27 +6,42 @@ import (
 	"time"
 
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/codegoalie/bubbletea-test/models"
 )
 
+type tickMsg time.Time
+
+type songMsg struct {
+	Song        models.Song
+	StationName string
+}
+
+type model struct {
+	choices  models.Stations
+	cursor   int
+	selected int
+
+	lastTick time.Time
+}
+
 var initialModel = model{
-	choices: Stations{
-		staticStation{
-			name:         "DPark",
-			endsAt:       time.Now().Add(time.Minute),
-			duration:     time.Minute * 2,
-			currentTrack: "Christmas",
+	choices: models.Stations{
+		// &sorcer.Seasons{},
+		&staticStation{
+			name: "WDWNTunes",
+			song: models.Song{
+				EndsAt:   time.Now().Add(5 * time.Second),
+				Duration: time.Minute * 2,
+				Name:     "Comercial",
+			},
 		},
-		staticStation{
-			name:         "Sorcerer",
-			endsAt:       time.Now().Add(3 * time.Second),
-			duration:     time.Minute*2 + time.Second*23,
-			currentTrack: "Parade",
-		},
-		staticStation{
-			name:         "WDWNT",
-			endsAt:       time.Now().Add(time.Minute).Add(3 * time.Second),
-			duration:     time.Minute*2 + time.Second*32,
-			currentTrack: "EPCOT enterance",
+		&staticStation{
+			name: "DPark",
+			song: models.Song{
+				EndsAt:   time.Now().Add(5 * time.Second),
+				Duration: time.Minute * 2,
+				Name:     "Christmas",
+			},
 		},
 	},
 	lastTick: time.Now(),
