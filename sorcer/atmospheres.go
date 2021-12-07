@@ -1,9 +1,15 @@
 package sorcer
 
-import "github.com/codegoalie/bubbletea-test/models"
+import (
+	"regexp"
 
-const atmospheresName = "Sorcer Radio Atmospheres"
-const atmospheresStreamURL = "https://samcloud.spacial.com/api/listen?sid=100903&m=sc&rid=177361"
+	"github.com/codegoalie/bubbletea-test/models"
+)
+
+const atmospheresName = "Atmospheres (Sorcer Radio)"
+const atmospheresStreamURL = "https://samcloud.spacial.com/api/listen?sid=130157&m=sc&rid=273285"
+
+var bigBandRegexp = regexp.MustCompile(`Friend Like Me \(Big Band\)`)
 
 type Atmospheres struct{}
 
@@ -19,10 +25,23 @@ func (s Atmospheres) StreamURL() string {
 
 // InfoURL is the URL to fetch track data
 func (s Atmospheres) InfoURL() string {
-	return infoURL("100903", "030c8d06bdd9e82eae632eaff484df864c54f14c")
+	return infoURL("130157", "acce5d6b010ebf1438bc1990f4cd357556aecf3b")
 }
 
 // ParseTrackInfo parses the provided bytes into a TrackInfo
 func (s Atmospheres) ParseTrackInfo(raw []byte) (*models.TrackInfo, error) {
-	return parseTrackInfo(raw)
+	recentSongs, err := unmarshalRecentSongs(raw)
+	if err != nil {
+		return nil, err
+	}
+
+	if len(recentSongs) < 1 {
+		return &models.TrackInfo{}, nil
+	}
+
+	if len(recentSongs) > 1 && bigBandRegexp.MatchString(recentSongs[0].Title) {
+		return recentToInfo(recentSongs[1])
+	}
+
+	return recentToInfo(recentSongs[0])
 }

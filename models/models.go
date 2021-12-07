@@ -1,43 +1,46 @@
 package models
 
-import "time"
+import (
+	"strings"
+	"time"
+)
 
 type Station interface {
 	Name() string
-	CurrentTrack() string
+	CurrentTrack() *TrackInfo
 	Remaining(time.Time) time.Duration
 	Duration() time.Duration
-	Song() *Song
-	SetSong(Song)
+	SetSong(*TrackInfo)
+
+	StreamURL() string
+	InfoURL() string
+	ParseTrackInfo(raw []byte) (*TrackInfo, error)
 }
 
 type Stations []Station
-
-type Song struct {
-	Name     string
-	Duration time.Duration
-	EndsAt   time.Time
-}
-
-type tickMsg time.Time
-
-type songMsg struct {
-	Song        Song
-	StationName string
-}
-
-type model struct {
-	choices  Stations
-	cursor   int
-	selected int
-
-	lastTick time.Time
-}
 
 type TrackInfo struct {
 	Title     string
 	Album     string
 	Artist    string
-	Duration  float64
+	Duration  time.Duration
 	StartedAt time.Time
+}
+
+func (t TrackInfo) String() string {
+	var msg strings.Builder
+	msg.WriteString(t.Title)
+
+	if t.Artist != "" {
+		msg.WriteString(" - ")
+		msg.WriteString(t.Artist)
+	}
+
+	if t.Album != "" {
+		msg.WriteString(" [")
+		msg.WriteString(t.Album)
+		msg.WriteString("]")
+	}
+
+	return msg.String()
 }

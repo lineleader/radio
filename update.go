@@ -1,10 +1,12 @@
 package main
 
 import (
+	"fmt"
 	"time"
 
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/codegoalie/bubbletea-test/models"
+	"github.com/codegoalie/bubbletea-test/utils"
 )
 
 func (m model) Init() tea.Cmd {
@@ -56,6 +58,9 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		}
 
 		m.choices = newChoices
+
+	case errMsg:
+		m.errMsg = errMsg(msg).err.Error()
 	}
 
 	return m, nil
@@ -68,14 +73,31 @@ func tick() tea.Cmd {
 }
 
 func sync(station models.Station) tea.Cmd {
+	trackInfo, err := latestSong(station)
+	if err != nil {
+		return func() tea.Msg {
+			return errMsg{err}
+		}
+	}
+
 	return func() tea.Msg {
 		return songMsg{
-			Song: models.Song{
-				Name:     "New song",
-				Duration: 45 * time.Second,
-				EndsAt:   time.Now().Add(32 * time.Second),
-			},
+			Song:        trackInfo,
 			StationName: station.Name(),
 		}
 	}
+}
+
+func latestSong(station models.Station) (*models.TrackInfo, error) {
+	buf, err := utils.HTTPGet(station.InfoURL())
+	if err != nil {
+		err = fmt.Errorf("failed to get station info (%s): %w", station.Name(), err)
+		return nil, err
+	}
+
+	if len(buf.Bytes()) == 0 {
+		return nil, nil
+	}
+
+	return station.ParseTrackInfo(buf.Bytes())
 }
