@@ -7,6 +7,8 @@ import (
 	"time"
 )
 
+const maxSongLength = 75
+
 func (m model) View() string {
 	s := strings.Builder{}
 	s.WriteString("Station list\n\n")
@@ -28,7 +30,7 @@ func (m model) View() string {
 		s.WriteString("] ")
 		s.WriteString(choice.Name())
 		s.WriteString("\t")
-		s.WriteString(choice.CurrentTrack().String())
+		s.WriteString(truncate(choice.CurrentTrack().String(), maxSongLength))
 		s.WriteString("\t")
 
 		remainingTime := choice.Remaining(m.lastTick)
@@ -61,4 +63,12 @@ func displayTime(left time.Duration) string {
 		math.Mod(left.Seconds(), 60),
 	)
 
+}
+
+func truncate(in string, maxLength int) string {
+	if len(in) > maxLength {
+		return in[:maxLength]
+	}
+
+	return in
 }
