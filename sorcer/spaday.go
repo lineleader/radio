@@ -21,6 +21,6 @@ func (s SpaDay) InfoURL() string {
 	return infoURL("130151", "29f4cfbac856cb4725f30257e21705772b59676d")
 }
 
-func (s SpaDay) ParseTrackInfo(raw []byte) (*models.TrackInfo, error) {
+func (s SpaDay) ParseTrackInfo(raw []byte) (models.TrackInfo, error) {
 	return parseTrackInfo(raw)
 }

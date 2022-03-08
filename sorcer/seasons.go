@@ -23,6 +23,6 @@ func (s Seasons) InfoURL() string {
 }
 
 // ParseTrackInfo parses the provided bytes into a TrackInfo
-func (s Seasons) ParseTrackInfo(raw []byte) (*models.TrackInfo, error) {
+func (s Seasons) ParseTrackInfo(raw []byte) (models.TrackInfo, error) {
 	return parseTrackInfo(raw)
 }

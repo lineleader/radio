@@ -16,6 +16,6 @@ func (m Main) InfoURL() string {
 	return "https://api.live365.com/station/a89268"
 }
 
-func (m Main) ParseTrackInfo(raw []byte) (*models.TrackInfo, error) {
+func (m Main) ParseTrackInfo(raw []byte) (models.TrackInfo, error) {
 	return parseLive365TrackInfo(raw)
 }

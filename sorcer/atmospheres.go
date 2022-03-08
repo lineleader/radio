@@ -29,14 +29,14 @@ func (s Atmospheres) InfoURL() string {
 }
 
 // ParseTrackInfo parses the provided bytes into a TrackInfo
-func (s Atmospheres) ParseTrackInfo(raw []byte) (*models.TrackInfo, error) {
+func (s Atmospheres) ParseTrackInfo(raw []byte) (models.TrackInfo, error) {
 	recentSongs, err := unmarshalRecentSongs(raw)
 	if err != nil {
-		return nil, err
+		return models.TrackInfo{}, err
 	}
 
 	if len(recentSongs) < 1 {
-		return &models.TrackInfo{}, nil
+		return models.TrackInfo{}, nil
 	}
 
 	if len(recentSongs) > 1 && bigBandRegexp.MatchString(recentSongs[0].Title) {

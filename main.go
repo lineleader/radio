@@ -15,7 +15,7 @@ import (
 type tickMsg time.Time
 
 type songMsg struct {
-	Song        *models.TrackInfo
+	Song        models.TrackInfo
 	StationName string
 }
 

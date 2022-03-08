@@ -88,15 +88,15 @@ func sync(station models.Station) tea.Cmd {
 	}
 }
 
-func latestSong(station models.Station) (*models.TrackInfo, error) {
+func latestSong(station models.Station) (models.TrackInfo, error) {
 	buf, err := utils.HTTPGet(station.InfoURL())
 	if err != nil {
 		err = fmt.Errorf("failed to get station info (%s): %w", station.Name(), err)
-		return nil, err
+		return models.TrackInfo{}, err
 	}
 
 	if len(buf.Bytes()) == 0 {
-		return nil, nil
+		return models.TrackInfo{}, nil
 	}
 
 	return station.ParseTrackInfo(buf.Bytes())

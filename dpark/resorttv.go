@@ -27,6 +27,6 @@ func (b Resort) InfoURL() string {
 }
 
 // ParseTrackInfo parses the provided bytes into a TrackInfo
-func (b Resort) ParseTrackInfo(raw []byte) (*models.TrackInfo, error) {
+func (b Resort) ParseTrackInfo(raw []byte) (models.TrackInfo, error) {
 	return parseTrackInfo(raw)
 }

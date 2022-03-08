@@ -4,7 +4,8 @@ import (
 	"github.com/codegoalie/bubbletea-test/models"
 )
 
-const christmasName = "Christmas (DPark Radio)\t"
+// const christmasName = "Christmas (DPark Radio)\t"
+const christmasName = "Main Street (DPark Radio)\t"
 const christmasStreamURL = "https://listen.openstream.co/4287/;?1631785016772"
 const christmasInfoURL = "https://c11.radioboss.fm/w/nowplayinginfo?u=39"
 
@@ -27,6 +28,6 @@ func (b Christmas) InfoURL() string {
 }
 
 // ParseTrackInfo parses the provided bytes into a TrackInfo
-func (b Christmas) ParseTrackInfo(raw []byte) (*models.TrackInfo, error) {
+func (b Christmas) ParseTrackInfo(raw []byte) (models.TrackInfo, error) {
 	return parseTrackInfo(raw)
 }

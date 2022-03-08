@@ -30,14 +30,14 @@ func (t Tunes) InfoURL() string {
 }
 
 // ParseTrackInfo parses the provided bytes into a TrackInfo
-func (t Tunes) ParseTrackInfo(raw []byte) (*models.TrackInfo, error) {
+func (t Tunes) ParseTrackInfo(raw []byte) (models.TrackInfo, error) {
 	resp := &wdwnTunesResponse{}
 	err := json.Unmarshal(raw, &resp)
 	if err != nil {
 		err = fmt.Errorf("failed to unmarshal WDWNTunes info: %w", err)
-		return nil, err
+		return models.TrackInfo{}, err
 	}
-	info := &models.TrackInfo{}
+	info := models.TrackInfo{}
 
 	startedAt, err := time.Parse("2006-01-02 15:04:05-07:00", resp.CurrentTrack.Start)
 	if err != nil {

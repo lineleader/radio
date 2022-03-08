@@ -7,14 +7,14 @@ import (
 
 type Station interface {
 	Name() string
-	CurrentTrack() *TrackInfo
+	CurrentTrack() TrackInfo
 	Remaining(time.Time) time.Duration
 	Duration() time.Duration
-	SetSong(*TrackInfo)
+	SetSong(TrackInfo)
 
 	StreamURL() string
 	InfoURL() string
-	ParseTrackInfo(raw []byte) (*TrackInfo, error)
+	ParseTrackInfo(raw []byte) (TrackInfo, error)
 }
 
 type Stations []Station

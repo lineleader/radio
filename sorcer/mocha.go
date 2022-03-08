@@ -25,6 +25,6 @@ func (s Mocha) InfoURL() string {
 }
 
 // ParseTrackInfo parses the provided bytes into a TrackInfo
-func (s Mocha) ParseTrackInfo(raw []byte) (*models.TrackInfo, error) {
+func (s Mocha) ParseTrackInfo(raw []byte) (models.TrackInfo, error) {
 	return parseTrackInfo(raw)
 }

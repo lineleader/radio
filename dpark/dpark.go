@@ -13,15 +13,15 @@ type dParkResponse struct {
 	NowPlaying string `json:"nowplaying"`
 }
 
-func parseTrackInfo(raw []byte) (*models.TrackInfo, error) {
+func parseTrackInfo(raw []byte) (models.TrackInfo, error) {
 	resp := &dParkResponse{}
 	err := json.Unmarshal(raw, &resp)
 	if err != nil {
 		err = fmt.Errorf("failed to unmarshal DPark Radio info: %w (%s)", err, string(raw))
-		return nil, err
+		return models.TrackInfo{}, err
 	}
 
-	info := &models.TrackInfo{}
+	info := models.TrackInfo{}
 
 	splits := strings.Split(resp.NowPlaying, " - ")
 	if len(splits) < 3 {

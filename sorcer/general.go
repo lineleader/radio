@@ -43,20 +43,20 @@ func infoURL(stationID, token string) string {
 	return uri.String()
 }
 
-func parseTrackInfo(raw []byte) (*models.TrackInfo, error) {
+func parseTrackInfo(raw []byte) (models.TrackInfo, error) {
 	recentSongs, err := unmarshalRecentSongs(raw)
 	if err != nil {
-		return nil, err
+		return models.TrackInfo{}, err
 	}
 
 	if len(recentSongs) < 1 {
-		return &models.TrackInfo{}, nil
+		return models.TrackInfo{}, nil
 	}
 
 	return recentToInfo(recentSongs[0])
 }
 
-func parseLive365TrackInfo(raw []byte) (*models.TrackInfo, error) {
+func parseLive365TrackInfo(raw []byte) (models.TrackInfo, error) {
 	resp := live365Response{}
 	err := json.Unmarshal(raw, &resp)
 	if err != nil {
@@ -67,7 +67,7 @@ func parseLive365TrackInfo(raw []byte) (*models.TrackInfo, error) {
 			err,
 			printable.String(),
 		)
-		return nil, err
+		return models.TrackInfo{}, err
 	}
 
 	track := resp.CurrentTrack
@@ -78,7 +78,7 @@ func parseLive365TrackInfo(raw []byte) (*models.TrackInfo, error) {
 		StartedAt: time.Time(track.StartedAt),
 	}
 
-	return &info, nil
+	return info, nil
 
 }
 
@@ -144,13 +144,12 @@ func unmarshalRecentSongs(raw []byte) ([]sorcerRadioSong, error) {
 			err,
 			string(raw),
 		)
-		return nil, err
 	}
 
-	return recentSongs, nil
+	return recentSongs, err
 }
 
-func recentToInfo(currentSong sorcerRadioSong) (*models.TrackInfo, error) {
+func recentToInfo(currentSong sorcerRadioSong) (models.TrackInfo, error) {
 	info := models.TrackInfo{}
 	info.Title = currentSong.Title
 	info.Artist = currentSong.Artist
@@ -167,17 +166,17 @@ func recentToInfo(currentSong sorcerRadioSong) (*models.TrackInfo, error) {
 	)
 	if err != nil {
 		err = fmt.Errorf("failed to parse duration: %w", err)
-		return nil, err
+		return models.TrackInfo{}, err
 	}
 
 	unixStr := strings.Split(strings.Trim(currentSong.DatePlayed, "\\/Date()"), "+")[0]
 	unixMillisecs, err := strconv.ParseInt(unixStr, 10, 64)
 	if err != nil {
 		err = fmt.Errorf("failed to parse Sorcer started at: %w", err)
-		return &info, err
+		return info, err
 	}
 	startedAt := time.Unix(unixMillisecs/1000, 0)
 	info.StartedAt = startedAt
 
-	return &info, nil
+	return info, nil
 }
