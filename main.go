@@ -12,6 +12,7 @@ import (
 	"github.com/codegoalie/bubbletea-test/models"
 	"github.com/codegoalie/bubbletea-test/sorcer"
 	"github.com/codegoalie/bubbletea-test/wdwnt"
+	"github.com/codegoalie/golibnotify"
 )
 
 type tickMsg time.Time
@@ -36,6 +37,7 @@ type model struct {
 	errMsg    string
 	mediaURLs chan string
 	actions   chan string
+	notifier  *golibnotify.SimpleNotifier
 }
 
 var initialModel = model{
@@ -53,11 +55,13 @@ var initialModel = model{
 	lastTick: time.Now(),
 
 	mediaURLs: make(chan string),
+	notifier:  golibnotify.NewSimpleNotifier("Stream Player"),
 }
 
 func main() {
 	quit := make(chan struct{})
 	defer close(quit)
+	defer initialModel.notifier.Close()
 
 	go playAudio(initialModel.mediaURLs, quit)
 	initialModel.mediaURLs <- initialModel.choices[initialModel.selected].StreamURL()

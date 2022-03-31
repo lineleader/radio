@@ -30,7 +30,14 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		case "enter", " ":
 			m.selected = m.cursor
-			m.mediaURLs <- m.choices[m.selected].StreamURL()
+			newSelection := m.choices[m.selected]
+			m.mediaURLs <- newSelection.StreamURL()
+			currentSong := newSelection.CurrentTrack()
+			m.notifier.Update(
+				currentSong.Title,
+				currentSong.Artist,
+				"",
+			)
 		}
 
 	case tickMsg:
@@ -52,8 +59,16 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		var newChoices = make(models.Stations, len(m.choices))
 		for i, choice := range m.choices {
 			newChoice := choice
-			if choice.Name() == smsg.StationName {
+			if choice.Name() == smsg.StationName && choice.CurrentTrack().Title != smsg.Song.Title {
 				newChoice.SetSong(smsg.Song)
+        // Only send notification on selected station
+				if i == m.selected {
+					m.notifier.Update(
+						smsg.Song.Title,
+						smsg.Song.Artist,
+						"",
+					)
+				}
 			}
 			newChoices[i] = newChoice
 		}
