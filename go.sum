@@ -1,3 +1,5 @@
+github.com/adrg/libvlc-go/v3 v3.1.5 h1:TGO0dvubmLCSE4ocOtJYMBlPYALm8aGMkCuDZ6cXnM0=
+github.com/adrg/libvlc-go/v3 v3.1.5/go.mod h1:xJK0YD8cyMDejnrTFQinStE6RYCV1nlfS8KmqTpszSc=
 github.com/charmbracelet/bubbletea v0.12.2 h1:y9Yo2Pv8tcm3mAJsWONGsmHhzrbNxJVxpVtemikxE9A=
 github.com/charmbracelet/bubbletea v0.12.2/go.mod h1:3gZkYELUOiEUOp0bTInkxguucy/xRbGSOcbMs1geLxg=
 github.com/containerd/console v1.0.1 h1:u7SFAJyRqWcG6ogaMAx3KjSTy1e3hT9QxqX7Jco7dRc=
