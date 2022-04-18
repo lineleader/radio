@@ -47,10 +47,6 @@ func (m model) View() string {
 		s.WriteString("\n")
 	}
 
-	if m.errMsg != "" {
-		s.WriteString("\n" + m.errMsg + "\n")
-	}
-
 	s.WriteString("\nPress q to quit.\n")
 
 	return s.String()
