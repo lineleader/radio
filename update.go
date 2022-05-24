@@ -61,7 +61,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			newChoice := choice
 			if choice.Name() == smsg.StationName && choice.CurrentTrack().Title != smsg.Song.Title {
 				newChoice.SetSong(smsg.Song)
-        // Only send notification on selected station
+				// Only send notification on selected station
 				if i == m.selected {
 					m.notifier.Update(
 						smsg.Song.Title,
