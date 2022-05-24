@@ -89,14 +89,14 @@ func tick() tea.Cmd {
 }
 
 func sync(station models.Station) tea.Cmd {
-	trackInfo, err := latestSong(station)
-	if err != nil {
-		return func() tea.Msg {
-			return errMsg{err}
-		}
-	}
-
 	return func() tea.Msg {
+		trackInfo, err := latestSong(station)
+		if err != nil {
+			return func() tea.Msg {
+				return errMsg{err}
+			}
+		}
+
 		return songMsg{
 			Song:        trackInfo,
 			StationName: station.Name(),
