@@ -16,7 +16,7 @@ import (
 type Park struct{}
 
 func (p Park) Name() string {
-	return "Theme Park Stream (Radio Wonderland)"
+	return "Theme Park (Radio Wonderland)"
 }
 
 func (p Park) StreamURL() string {
