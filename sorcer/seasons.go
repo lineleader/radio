@@ -3,7 +3,7 @@ package sorcer
 import "github.com/codegoalie/bubbletea-test/models"
 
 const seasonsName = "Seasons (Sorcer Radio)\t"
-const seasonsStreamURL = "http://19293.live.streamtheworld.com/SP_R2809833"
+const seasonsStreamURL = "https://samcloud.spacial.com/api/listen?sid=104853&rid=182288&f=mp3,any&br=128000,any&m=sc"
 
 type Seasons struct{}
 
