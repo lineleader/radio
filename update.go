@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/charmbracelet/bubbles/spinner"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/codegoalie/bubbletea-test/models"
 )
@@ -52,12 +53,17 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		}
 
 		m.choices = newChoices
-		return m, waitForUpdates(m.updates)
+		return m, tea.Batch(waitForUpdates(m.updates), m.spinner.Tick)
 
 	case errMsg:
 		m.errMsg = errMsg(msg).err.Error()
-		return m, waitForUpdates(m.updates)
+		return m, tea.Batch(waitForUpdates(m.updates), m.spinner.Tick)
+
+	case spinner.TickMsg:
+		var cmd tea.Cmd
+		m.spinner, cmd = m.spinner.Update(msg)
+		return m, cmd
 	}
 
-	return m, nil
+	return m, m.spinner.Tick
 }

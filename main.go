@@ -7,7 +7,9 @@ import (
 	"time"
 
 	vlc "github.com/adrg/libvlc-go/v3"
+	"github.com/charmbracelet/bubbles/spinner"
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/lipgloss"
 	"github.com/codegoalie/bubbletea-test/dpark"
 	"github.com/codegoalie/bubbletea-test/models"
 	"github.com/codegoalie/bubbletea-test/sorcer"
@@ -35,6 +37,7 @@ type model struct {
 	selected int
 
 	lastTick  time.Time
+	spinner   spinner.Model
 	errMsg    string
 	mediaURLs chan string
 	actions   chan string
@@ -43,7 +46,7 @@ type model struct {
 }
 
 func (m model) Init() tea.Cmd {
-	cmds := []tea.Cmd{waitForUpdates(m.updates)}
+	cmds := []tea.Cmd{waitForUpdates(m.updates), m.spinner.Tick}
 	for _, station := range m.choices {
 		cmds = append(cmds, station.RegisterForUpdates(m.updates))
 	}
@@ -89,6 +92,10 @@ func main() {
 
 	go playAudio(initialModel.mediaURLs, quit)
 	initialModel.mediaURLs <- initialModel.choices[initialModel.selected].StreamURL()
+
+	initialModel.spinner = spinner.New()
+	initialModel.spinner.Style = lipgloss.NewStyle().Foreground(lipgloss.Color("69"))
+	initialModel.spinner.Spinner = spinner.MiniDot
 
 	p := tea.NewProgram(initialModel)
 	if err := p.Start(); err != nil {

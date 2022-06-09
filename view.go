@@ -35,7 +35,7 @@ func (m model) View() string {
 
 		remainingTime := choice.Remaining(m.lastTick)
 		if remainingTime < 0 {
-			s.WriteString("(Loading...)")
+			s.WriteString(m.spinner.View())
 		} else {
 			s.WriteString("(")
 			s.WriteString(displayTime(remainingTime))
