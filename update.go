@@ -62,7 +62,10 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case spinner.TickMsg:
 		var cmd tea.Cmd
 		m.spinner, cmd = m.spinner.Update(msg)
+		m.lastTick = spinner.TickMsg(msg).Time
 		return m, cmd
+
+	case tickMsg:
 	}
 
 	return m, m.spinner.Tick
