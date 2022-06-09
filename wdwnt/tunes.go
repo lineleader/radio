@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"time"
 
+	tea "github.com/charmbracelet/bubbletea"
 	"github.com/codegoalie/bubbletea-test/models"
+	"github.com/codegoalie/bubbletea-test/utils"
 )
 
 const tunesName = "WDWNTunes\t\t\t"
@@ -61,4 +63,8 @@ type wdwnTunesResponse struct {
 		Start    string  `json:"start"`
 		Duration float64 `json:"duration"`
 	} `json:"current-track"`
+}
+
+func (t Tunes) RegisterForUpdates(updates chan models.TrackUpdate) tea.Cmd {
+	return utils.SetupUpdateRegister(t, updates)
 }

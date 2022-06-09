@@ -1,10 +1,17 @@
 package models
 
-import "time"
+import (
+	"time"
+
+	tea "github.com/charmbracelet/bubbletea"
+)
 
 type StationSource interface {
 	Name() string
 	StreamURL() string
+	RegisterForUpdates(chan TrackUpdate) tea.Cmd
+
+	// deprecated
 	InfoURL() string
 	ParseTrackInfo([]byte) (TrackInfo, error)
 }
@@ -42,10 +49,6 @@ func (r *RemoteStation) StreamURL() string {
 	return r.source.StreamURL()
 }
 
-func (r *RemoteStation) InfoURL() string {
-	return r.source.InfoURL()
-}
-
-func (r *RemoteStation) ParseTrackInfo(raw []byte) (TrackInfo, error) {
-	return r.source.ParseTrackInfo(raw)
+func (r *RemoteStation) RegisterForUpdates(updates chan TrackUpdate) tea.Cmd {
+	return r.source.RegisterForUpdates(updates)
 }

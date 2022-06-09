@@ -12,6 +12,7 @@ import (
 	"github.com/codegoalie/bubbletea-test/models"
 	"github.com/codegoalie/bubbletea-test/sorcer"
 	"github.com/codegoalie/bubbletea-test/wdwnt"
+	"github.com/codegoalie/bubbletea-test/wonderland"
 	"github.com/codegoalie/golibnotify"
 )
 
@@ -38,12 +39,34 @@ type model struct {
 	mediaURLs chan string
 	actions   chan string
 	notifier  *golibnotify.SimpleNotifier
+	updates   chan models.TrackUpdate
+}
+
+func (m model) Init() tea.Cmd {
+	cmds := []tea.Cmd{waitForUpdates(m.updates)}
+	for _, station := range m.choices {
+		cmds = append(cmds, station.RegisterForUpdates(m.updates))
+	}
+	return tea.Batch(cmds...)
+}
+
+type updateMsg models.TrackUpdate
+
+func waitForUpdates(updates chan models.TrackUpdate) tea.Cmd {
+	return func() tea.Msg {
+		update := <-updates
+		if update.Error != nil {
+			return errMsg{update.Error}
+		}
+		return songMsg{Song: update.Info, StationName: update.StationName}
+	}
 }
 
 var initialModel = model{
 	choices: models.Stations{
 		models.NewRemoteStation(&sorcer.Atmospheres{}),
 		models.NewRemoteStation(&dpark.Background{}),
+		models.NewRemoteStation(&wonderland.Park{}),
 		models.NewRemoteStation(&sorcer.Seasons{}),
 		models.NewRemoteStation(&dpark.Christmas{}),
 		models.NewRemoteStation(&sorcer.Mocha{}),
@@ -56,6 +79,7 @@ var initialModel = model{
 
 	mediaURLs: make(chan string),
 	notifier:  golibnotify.NewSimpleNotifier("Stream Player"),
+	updates:   make(chan models.TrackUpdate),
 }
 
 func main() {

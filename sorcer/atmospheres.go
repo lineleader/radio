@@ -3,7 +3,9 @@ package sorcer
 import (
 	"regexp"
 
+	tea "github.com/charmbracelet/bubbletea"
 	"github.com/codegoalie/bubbletea-test/models"
+	"github.com/codegoalie/bubbletea-test/utils"
 )
 
 const atmospheresName = "Atmospheres (Sorcer Radio)"
@@ -21,6 +23,10 @@ func (s Atmospheres) Name() string {
 // StreamURL provides the current URL to stream audio
 func (s Atmospheres) StreamURL() string {
 	return atmospheresStreamURL
+}
+
+func (s Atmospheres) RegisterForUpdates(updates chan models.TrackUpdate) tea.Cmd {
+	return utils.SetupUpdateRegister(s, updates)
 }
 
 // InfoURL is the URL to fetch track data

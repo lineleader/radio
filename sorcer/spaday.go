@@ -1,7 +1,9 @@
 package sorcer
 
 import (
+	tea "github.com/charmbracelet/bubbletea"
 	"github.com/codegoalie/bubbletea-test/models"
+	"github.com/codegoalie/bubbletea-test/utils"
 )
 
 const streamName = "Spa Day (Sorcer Radio)\t"
@@ -23,4 +25,8 @@ func (s SpaDay) InfoURL() string {
 
 func (s SpaDay) ParseTrackInfo(raw []byte) (models.TrackInfo, error) {
 	return parseTrackInfo(raw)
+}
+
+func (s SpaDay) RegisterForUpdates(updates chan models.TrackUpdate) tea.Cmd {
+	return utils.SetupUpdateRegister(s, updates)
 }

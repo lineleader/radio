@@ -1,6 +1,10 @@
 package sorcer
 
-import "github.com/codegoalie/bubbletea-test/models"
+import (
+	tea "github.com/charmbracelet/bubbletea"
+	"github.com/codegoalie/bubbletea-test/models"
+	"github.com/codegoalie/bubbletea-test/utils"
+)
 
 type Main struct{}
 
@@ -18,4 +22,8 @@ func (m Main) InfoURL() string {
 
 func (m Main) ParseTrackInfo(raw []byte) (models.TrackInfo, error) {
 	return parseLive365TrackInfo(raw)
+}
+
+func (m Main) RegisterForUpdates(updates chan models.TrackUpdate) tea.Cmd {
+	return utils.SetupUpdateRegister(m, updates)
 }

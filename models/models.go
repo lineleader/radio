@@ -3,6 +3,8 @@ package models
 import (
 	"strings"
 	"time"
+
+	tea "github.com/charmbracelet/bubbletea"
 )
 
 type Station interface {
@@ -13,11 +15,22 @@ type Station interface {
 	SetSong(TrackInfo)
 
 	StreamURL() string
+	RegisterForUpdates(chan TrackUpdate) tea.Cmd
+}
+
+type PollingStation interface {
+	Name() string
 	InfoURL() string
 	ParseTrackInfo(raw []byte) (TrackInfo, error)
 }
 
 type Stations []Station
+
+type TrackUpdate struct {
+	StationName string
+	Info        TrackInfo
+	Error       error
+}
 
 type TrackInfo struct {
 	Title     string

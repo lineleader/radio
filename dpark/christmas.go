@@ -1,7 +1,9 @@
 package dpark
 
 import (
+	tea "github.com/charmbracelet/bubbletea"
 	"github.com/codegoalie/bubbletea-test/models"
+	"github.com/codegoalie/bubbletea-test/utils"
 )
 
 // const christmasName = "Christmas (DPark Radio)\t"
@@ -30,4 +32,8 @@ func (b Christmas) InfoURL() string {
 // ParseTrackInfo parses the provided bytes into a TrackInfo
 func (b Christmas) ParseTrackInfo(raw []byte) (models.TrackInfo, error) {
 	return parseTrackInfo(raw)
+}
+
+func (b Christmas) RegisterForUpdates(updates chan models.TrackUpdate) tea.Cmd {
+	return utils.SetupUpdateRegister(b, updates)
 }

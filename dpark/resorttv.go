@@ -1,7 +1,9 @@
 package dpark
 
 import (
+	tea "github.com/charmbracelet/bubbletea"
 	"github.com/codegoalie/bubbletea-test/models"
+	"github.com/codegoalie/bubbletea-test/utils"
 )
 
 const resortName = "Resort TV (DPark Radio)\t"
@@ -29,4 +31,8 @@ func (b Resort) InfoURL() string {
 // ParseTrackInfo parses the provided bytes into a TrackInfo
 func (b Resort) ParseTrackInfo(raw []byte) (models.TrackInfo, error) {
 	return parseTrackInfo(raw)
+}
+
+func (b Resort) RegisterForUpdates(updates chan models.TrackUpdate) tea.Cmd {
+	return utils.SetupUpdateRegister(b, updates)
 }

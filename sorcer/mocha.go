@@ -1,7 +1,9 @@
 package sorcer
 
 import (
+	tea "github.com/charmbracelet/bubbletea"
 	"github.com/codegoalie/bubbletea-test/models"
+	"github.com/codegoalie/bubbletea-test/utils"
 )
 
 const mochaName = "Mocha (Sorcer Radio)\t"
@@ -27,4 +29,8 @@ func (s Mocha) InfoURL() string {
 // ParseTrackInfo parses the provided bytes into a TrackInfo
 func (s Mocha) ParseTrackInfo(raw []byte) (models.TrackInfo, error) {
 	return parseTrackInfo(raw)
+}
+
+func (s Mocha) RegisterForUpdates(updates chan models.TrackUpdate) tea.Cmd {
+	return utils.SetupUpdateRegister(s, updates)
 }
