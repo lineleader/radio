@@ -21,16 +21,11 @@ func (s Seasons) StreamURL() string {
 	return seasonsStreamURL
 }
 
-// InfoURL is the URL to fetch track data
-func (s Seasons) InfoURL() string {
-	return infoURL("104853", "254aec990e7d964645bc5fb68c58d45448f7719d")
-}
-
-// ParseTrackInfo parses the provided bytes into a TrackInfo
-func (s Seasons) ParseTrackInfo(raw []byte) (models.TrackInfo, error) {
-	return parseTrackInfo(raw)
-}
-
 func (s Seasons) RegisterForUpdates(updates chan models.TrackUpdate) tea.Cmd {
-	return utils.SetupUpdateRegister(s, updates)
+	return utils.SetupUpdateRegister(
+		s.Name(),
+		infoURL("104853", "254aec990e7d964645bc5fb68c58d45448f7719d"),
+		parseTrackInfo,
+		updates,
+	)
 }

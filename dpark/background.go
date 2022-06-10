@@ -28,16 +28,10 @@ func (b Background) StreamURL() string {
 	return backgroundStreamURL
 }
 
-// InfoURL is the URL to fetch track data
-func (b Background) InfoURL() string {
-	return backgroundInfoURL + fmt.Sprintf("%d", time.Now().Unix())
-}
-
-// ParseTrackInfo parses the provided bytes into a TrackInfo
-func (b Background) ParseTrackInfo(raw []byte) (models.TrackInfo, error) {
-	return parseTrackInfo(raw)
-}
-
 func (b Background) RegisterForUpdates(updates chan models.TrackUpdate) tea.Cmd {
-	return utils.SetupUpdateRegister(b, updates)
+	return utils.SetupUpdateRegister(
+		b.Name(),
+		backgroundInfoURL+fmt.Sprintf("%d", time.Now().Unix()),
+		parseTrackInfo,
+		updates)
 }

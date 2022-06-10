@@ -23,16 +23,11 @@ func (b Resort) StreamURL() string {
 	return resortStreamURL
 }
 
-// InfoURL is the URL to fetch track data
-func (b Resort) InfoURL() string {
-	return resortInfoURL
-}
-
-// ParseTrackInfo parses the provided bytes into a TrackInfo
-func (b Resort) ParseTrackInfo(raw []byte) (models.TrackInfo, error) {
-	return parseTrackInfo(raw)
-}
-
 func (b Resort) RegisterForUpdates(updates chan models.TrackUpdate) tea.Cmd {
-	return utils.SetupUpdateRegister(b, updates)
+	return utils.SetupUpdateRegister(
+		b.Name(),
+		resortInfoURL,
+		parseTrackInfo,
+		updates,
+	)
 }

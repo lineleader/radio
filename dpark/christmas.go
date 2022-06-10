@@ -24,16 +24,11 @@ func (b Christmas) StreamURL() string {
 	return christmasStreamURL
 }
 
-// InfoURL is the URL to fetch track data
-func (b Christmas) InfoURL() string {
-	return christmasInfoURL
-}
-
-// ParseTrackInfo parses the provided bytes into a TrackInfo
-func (b Christmas) ParseTrackInfo(raw []byte) (models.TrackInfo, error) {
-	return parseTrackInfo(raw)
-}
-
 func (b Christmas) RegisterForUpdates(updates chan models.TrackUpdate) tea.Cmd {
-	return utils.SetupUpdateRegister(b, updates)
+	return utils.SetupUpdateRegister(
+		b.Name(),
+		christmasInfoURL,
+		parseTrackInfo,
+		updates,
+	)
 }

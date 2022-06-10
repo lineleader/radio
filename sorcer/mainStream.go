@@ -6,6 +6,10 @@ import (
 	"github.com/codegoalie/bubbletea-test/utils"
 )
 
+const (
+	mainInfoURL = "https://api.live365.com/station/a89268"
+)
+
 type Main struct{}
 
 func (m Main) Name() string {
@@ -16,14 +20,11 @@ func (m Main) StreamURL() string {
 	return "https://streaming.live365.com/a89268"
 }
 
-func (m Main) InfoURL() string {
-	return "https://api.live365.com/station/a89268"
-}
-
-func (m Main) ParseTrackInfo(raw []byte) (models.TrackInfo, error) {
-	return parseLive365TrackInfo(raw)
-}
-
 func (m Main) RegisterForUpdates(updates chan models.TrackUpdate) tea.Cmd {
-	return utils.SetupUpdateRegister(m, updates)
+	return utils.SetupUpdateRegister(
+		m.Name(),
+		mainInfoURL,
+		parseLive365TrackInfo,
+		updates,
+	)
 }

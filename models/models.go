@@ -8,20 +8,16 @@ import (
 )
 
 type Station interface {
-	Name() string
+	StationSource
 	CurrentTrack() TrackInfo
-	Remaining(time.Time) time.Duration
 	Duration() time.Duration
 	SetSong(TrackInfo)
-
-	StreamURL() string
-	RegisterForUpdates(chan TrackUpdate) tea.Cmd
 }
 
-type PollingStation interface {
+type StationSource interface {
 	Name() string
-	InfoURL() string
-	ParseTrackInfo(raw []byte) (TrackInfo, error)
+	StreamURL() string
+	RegisterForUpdates(chan TrackUpdate) tea.Cmd
 }
 
 type Stations []Station

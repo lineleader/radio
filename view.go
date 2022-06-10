@@ -5,6 +5,8 @@ import (
 	"math"
 	"strings"
 	"time"
+
+	"github.com/codegoalie/bubbletea-test/models"
 )
 
 const maxSongLength = 75
@@ -33,7 +35,7 @@ func (m model) View() string {
 		s.WriteString(truncate(choice.CurrentTrack().String(), maxSongLength))
 		s.WriteString("\t")
 
-		remainingTime := choice.Remaining(m.lastTick)
+		remainingTime := remaining(choice.CurrentTrack(), m.lastTick)
 		if remainingTime < 0 {
 			s.WriteString(m.spinner.View())
 		} else {
@@ -67,4 +69,8 @@ func truncate(in string, maxLength int) string {
 	}
 
 	return in
+}
+
+func remaining(currentTrack models.TrackInfo, now time.Time) time.Duration {
+	return currentTrack.StartedAt.Add(currentTrack.Duration).Sub(now)
 }

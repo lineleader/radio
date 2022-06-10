@@ -8,7 +8,9 @@ import (
 	"github.com/codegoalie/bubbletea-test/models"
 )
 
-func SetupUpdateRegister(s models.PollingStation, updates chan models.TrackUpdate) tea.Cmd {
+type trackInfoParser func([]byte) (models.TrackInfo, error)
+
+func SetupUpdateRegister(stationName, infoURL string, parseTrackInfo trackInfoParser, updates chan models.TrackUpdate) tea.Cmd {
 	return func() tea.Msg {
 		ticks := 0
 		ticker := time.NewTicker(time.Second)
@@ -17,15 +19,16 @@ func SetupUpdateRegister(s models.PollingStation, updates chan models.TrackUpdat
 			select {
 			case <-ticker.C:
 				ticks++
+				// TODO: Be smarter about when to update (like no more remaining)
 				if ticks%5 == 0 {
 					update := models.TrackUpdate{
-						StationName: s.Name(),
+						StationName: stationName,
 					}
-					raw, err := HTTPGet(s.InfoURL())
+					raw, err := HTTPGet(infoURL)
 					if err != nil {
 						update.Error = fmt.Errorf("failed to get atmospheres info: %w", err)
 					} else {
-						update.Info, err = s.ParseTrackInfo(raw.Bytes())
+						update.Info, err = parseTrackInfo(raw.Bytes())
 						if err != nil {
 							update.Error = fmt.Errorf("failed to parse atmospheres info: %w", err)
 						}
