@@ -1,17 +1,10 @@
 package main
 
 import (
-	"fmt"
-	"time"
-
+	"github.com/charmbracelet/bubbles/spinner"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/codegoalie/bubbletea-test/models"
-	"github.com/codegoalie/bubbletea-test/utils"
 )
-
-func (m model) Init() tea.Cmd {
-	return tick()
-}
 
 func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
@@ -22,10 +15,14 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case "up", "k":
 			if m.cursor > 0 {
 				m.cursor--
+			} else {
+				m.cursor = len(m.choices) - 1
 			}
 		case "down", "j":
 			if m.cursor < len(m.choices)-1 {
 				m.cursor++
+			} else {
+				m.cursor = 0
 			}
 
 		case "enter", " ":
@@ -39,20 +36,6 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				"",
 			)
 		}
-
-	case tickMsg:
-		m.lastTick = time.Time(msg)
-		if m.lastTick.Unix()%5 != 0 {
-			return m, tick()
-		}
-
-		cmds := []tea.Cmd{tick()}
-		for _, choice := range m.choices {
-			if choice.Remaining(time.Now()) < 0 {
-				cmds = append(cmds, sync(choice))
-			}
-		}
-		return m, tea.Batch(cmds...)
 
 	case songMsg:
 		smsg := songMsg(msg)
@@ -74,46 +57,20 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		}
 
 		m.choices = newChoices
+		return m, tea.Batch(waitForUpdates(m.updates), m.spinner.Tick)
 
 	case errMsg:
 		m.errMsg = errMsg(msg).err.Error()
+		return m, tea.Batch(waitForUpdates(m.updates), m.spinner.Tick)
+
+	case spinner.TickMsg:
+		var cmd tea.Cmd
+		m.spinner, cmd = m.spinner.Update(msg)
+		m.lastTick = spinner.TickMsg(msg).Time
+		return m, cmd
+
+	case tickMsg:
 	}
 
-	return m, nil
-}
-
-func tick() tea.Cmd {
-	return tea.Every(time.Second, func(t time.Time) tea.Msg {
-		return tickMsg(t)
-	})
-}
-
-func sync(station models.Station) tea.Cmd {
-	return func() tea.Msg {
-		trackInfo, err := latestSong(station)
-		if err != nil {
-			return func() tea.Msg {
-				return errMsg{err}
-			}
-		}
-
-		return songMsg{
-			Song:        trackInfo,
-			StationName: station.Name(),
-		}
-	}
-}
-
-func latestSong(station models.Station) (models.TrackInfo, error) {
-	buf, err := utils.HTTPGet(station.InfoURL())
-	if err != nil {
-		err = fmt.Errorf("failed to get station info (%s): %w", station.Name(), err)
-		return models.TrackInfo{}, err
-	}
-
-	if len(buf.Bytes()) == 0 {
-		return models.TrackInfo{}, nil
-	}
-
-	return station.ParseTrackInfo(buf.Bytes())
+	return m, m.spinner.Tick
 }

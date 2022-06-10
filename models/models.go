@@ -3,21 +3,30 @@ package models
 import (
 	"strings"
 	"time"
+
+	tea "github.com/charmbracelet/bubbletea"
 )
 
 type Station interface {
-	Name() string
+	StationSource
 	CurrentTrack() TrackInfo
-	Remaining(time.Time) time.Duration
 	Duration() time.Duration
 	SetSong(TrackInfo)
+}
 
+type StationSource interface {
+	Name() string
 	StreamURL() string
-	InfoURL() string
-	ParseTrackInfo(raw []byte) (TrackInfo, error)
+	RegisterForUpdates(chan TrackUpdate) tea.Cmd
 }
 
 type Stations []Station
+
+type TrackUpdate struct {
+	StationName string
+	Info        TrackInfo
+	Error       error
+}
 
 type TrackInfo struct {
 	Title     string

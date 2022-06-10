@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"time"
 
+	tea "github.com/charmbracelet/bubbletea"
 	"github.com/codegoalie/bubbletea-test/models"
+	"github.com/codegoalie/bubbletea-test/utils"
 )
 
 const tunesName = "WDWNTunes\t\t\t"
@@ -24,13 +26,16 @@ func (t Tunes) StreamURL() string {
 	return tunesStreamURL
 }
 
-// InfoURL is the URL to fetch track data
-func (t Tunes) InfoURL() string {
-	return tunesInfoURL
+func (t Tunes) RegisterForUpdates(updates chan models.TrackUpdate) tea.Cmd {
+	return utils.SetupUpdateRegister(
+		t.Name(),
+		tunesInfoURL,
+		parseTrackInfo,
+		updates,
+	)
 }
 
-// ParseTrackInfo parses the provided bytes into a TrackInfo
-func (t Tunes) ParseTrackInfo(raw []byte) (models.TrackInfo, error) {
+func parseTrackInfo(raw []byte) (models.TrackInfo, error) {
 	resp := &wdwnTunesResponse{}
 	err := json.Unmarshal(raw, &resp)
 	if err != nil {
