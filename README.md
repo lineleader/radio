@@ -50,15 +50,18 @@ a stream to start playing it.
 $ radio
 Station list
 
-  [ ] Atmospheres (Sorcer Radio)        3 Cheeky Chicks Wax Company - magicallyscented.com [SRad2]      (Loading...)
-  [ ] Background (DPark Radio)          Walt Disney Studios Park Daytime Entrance Loop pt2 - Walt Disney Studios [D     (Loading...)
-  [ ] Seasons (Sorcer Radio)            Lava - Polynesian Resort [WDW Resort]   (01:35 / 05:44)
-  [ ] Main Street (DPark Radio)         Disney Parks - Hollywood Boulevard Main Street pt 1 Hollywood Studios   (Loading...)
-  [ ] Mocha (Sorcer Radio)              Festival of Food (Android & IOS) app - Festival of Food [SRad3] (00:27 / 00:45)
-> [x] WDWNTunes                         Music Loop 9 - Plaza Inn        (Loading...)
-  [ ] Main Stream (Sorcer Radio)        It's Ray-Ray Raining - The Dapper Dans  (Loading...)
-  [ ] Spa Day (Sorcer Radio)            She's My Reason - Contemporary Resort [WDW Resort]      (02:03 / 05:40)
-  [ ] Resort TV (DPark Radio)           Disney Parks - WDW Downtown Disney 2015 (Loading...)
+  [x] Atmospheres (Sorcer Radio)        You're Welcome (Moana) - Hollywood Studios Meet and Greet [Hollywood Studio     (01:17 / 02:49)
+  [ ] Background (DPark Radio)          Disneyland Main Street Usa 2012 Loop - Disneyland [Disney Parks]        ⠸
+  [ ] Theme Park (Radio Wonderland)     Pirates Of The Carribean (Yo Ho...) - Theme park music  (01:00 / 05:42)
+  [ ] Seasons (Sorcer Radio)            Fiesta Latina - Oscar Lopez [Heat]      (00:47 / 03:53)
+  [ ] Christmas (DPark Radio)           Disney Parks - Jingle Cruise Queue PT1  ⠸
+  [ ] Mocha (Sorcer Radio)              Memory Hole - Sorcey [Lands]    ⠸
+  [ ] WDWNTunes                         Area Music (Part 2) - Expedition Everest        ⠸
+  [ ] Main Stream (Sorcer Radio)        Trashin' the Camp - DCappella   ⠸
+  [ ] Main (Radio Wonderland)           Love is an Open Door - Frozen   (00:22 / 01:43)
+  [ ] Spa Day (Sorcer Radio)            Inside Out Main Theme - Inside Out [Disney Movie Music] (01:56 / 04:17)
+  [ ] Mellow (Radio Wonderland)         A whole new world (Mellow) - Aladdin    (42:43 / 42:53)
+> [ ] Resort TV (DPark Radio)           Disney Parks - Disneyland Resort TV 2001        ⠸
 
 Press q to quit.
 ```
