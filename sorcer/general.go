@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"math"
 	"net/url"
+	"regexp"
 	"strconv"
 	"strings"
 	"time"
@@ -179,4 +180,23 @@ func recentToInfo(currentSong sorcerRadioSong) (models.TrackInfo, error) {
 	info.StartedAt = startedAt
 
 	return info, nil
+}
+
+func parseTrackInfoWithSkip(toSkip regexp.Regexp) func(raw []byte) (models.TrackInfo, error) {
+	return func(raw []byte) (models.TrackInfo, error) {
+		recentSongs, err := unmarshalRecentSongs(raw)
+		if err != nil {
+			return models.TrackInfo{}, err
+		}
+
+		if len(recentSongs) < 1 {
+			return models.TrackInfo{}, nil
+		}
+
+		if len(recentSongs) > 1 && toSkip.MatchString(recentSongs[0].Title) {
+			return recentToInfo(recentSongs[1])
+		}
+
+		return recentToInfo(recentSongs[0])
+	}
 }

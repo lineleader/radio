@@ -30,24 +30,7 @@ func (s Atmospheres) RegisterForUpdates(updates chan models.TrackUpdate) tea.Cmd
 	return utils.SetupUpdateRegister(
 		s.Name(),
 		infoURL("130157", "acce5d6b010ebf1438bc1990f4cd357556aecf3b"),
-		parseAtmospheresTrackInfo,
+		parseTrackInfoWithSkip(*bigBandRegexp),
 		updates,
 	)
-}
-
-func parseAtmospheresTrackInfo(raw []byte) (models.TrackInfo, error) {
-	recentSongs, err := unmarshalRecentSongs(raw)
-	if err != nil {
-		return models.TrackInfo{}, err
-	}
-
-	if len(recentSongs) < 1 {
-		return models.TrackInfo{}, nil
-	}
-
-	if len(recentSongs) > 1 && bigBandRegexp.MatchString(recentSongs[0].Title) {
-		return recentToInfo(recentSongs[1])
-	}
-
-	return recentToInfo(recentSongs[0])
 }
