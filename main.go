@@ -99,7 +99,7 @@ func main() {
 	initialModel.spinner.Style = lipgloss.NewStyle().Foreground(lipgloss.Color("69"))
 	initialModel.spinner.Spinner = spinner.MiniDot
 
-	p := tea.NewProgram(initialModel)
+	p := tea.NewProgram(initialModel, tea.WithAltScreen())
 	if err := p.Start(); err != nil {
 		fmt.Printf("Error starting streamer: %v", err)
 		os.Exit(1)
