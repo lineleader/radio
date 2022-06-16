@@ -11,7 +11,7 @@ import (
 const atmospheresName = "Atmospheres (Sorcer Radio)"
 const atmospheresStreamURL = "https://samcloud.spacial.com/api/listen?sid=130157&m=sc&rid=273285"
 
-var bigBandRegexp = regexp.MustCompile(`Friend Like Me \(Big Band\)`)
+var bigBandRegexp = regexp.MustCompile(`International Gateway2`)
 
 type Atmospheres struct{}
 
