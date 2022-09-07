@@ -29,11 +29,12 @@ type TrackUpdate struct {
 }
 
 type TrackInfo struct {
-	Title     string
-	Album     string
-	Artist    string
-	Duration  time.Duration
-	StartedAt time.Time
+	Title      string
+	Album      string
+	Artist     string
+	HideTiming bool
+	Duration   time.Duration
+	StartedAt  time.Time
 }
 
 func (t TrackInfo) String() string {

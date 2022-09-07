@@ -42,7 +42,7 @@ func parseTrackInfo(raw []byte) (models.TrackInfo, error) {
 		err = fmt.Errorf("failed to unmarshal WDWNTunes info: %w", err)
 		return models.TrackInfo{}, err
 	}
-	info := models.TrackInfo{}
+	info := models.TrackInfo{HideTiming: true}
 
 	startedAt, err := time.Parse("2006-01-02 15:04:05-07:00", resp.CurrentTrack.Start)
 	if err != nil {

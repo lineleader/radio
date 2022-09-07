@@ -35,16 +35,7 @@ func (m model) View() string {
 		s.WriteString(truncate(choice.CurrentTrack().String(), maxSongLength))
 		s.WriteString("\t")
 
-		remainingTime := remaining(choice.CurrentTrack(), m.lastTick)
-		if remainingTime < 0 {
-			s.WriteString(m.spinner.View())
-		} else {
-			s.WriteString("(")
-			s.WriteString(displayTime(remainingTime))
-			s.WriteString(" / ")
-			s.WriteString(displayTime(choice.Duration()))
-			s.WriteString(")")
-		}
+		s.WriteString(remainingTimeDisplay(choice, m))
 
 		s.WriteString("\n")
 	}
@@ -68,9 +59,30 @@ func truncate(in string, maxLength int) string {
 		return in[:maxLength]
 	}
 
-	return in
+	return fmt.Sprintf("%-*s", maxLength, in)
 }
 
 func remaining(currentTrack models.TrackInfo, now time.Time) time.Duration {
 	return currentTrack.StartedAt.Add(currentTrack.Duration).Sub(now)
+}
+
+func remainingTimeDisplay(choice models.Station, m model) string {
+	if choice.CurrentTrack().HideTiming {
+		return "~"
+	}
+
+	s := strings.Builder{}
+
+	remainingTime := remaining(choice.CurrentTrack(), m.lastTick)
+	if remainingTime < 0 {
+		s.WriteString(m.spinner.View())
+	} else {
+		s.WriteString("(")
+		s.WriteString(displayTime(remainingTime))
+		s.WriteString(" / ")
+		s.WriteString(displayTime(choice.Duration()))
+		s.WriteString(")")
+	}
+
+	return s.String()
 }

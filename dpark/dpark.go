@@ -21,7 +21,7 @@ func parseTrackInfo(raw []byte) (models.TrackInfo, error) {
 		return models.TrackInfo{}, err
 	}
 
-	info := models.TrackInfo{}
+	info := models.TrackInfo{HideTiming: true}
 
 	splits := strings.Split(resp.NowPlaying, " - ")
 	if len(splits) < 3 {
