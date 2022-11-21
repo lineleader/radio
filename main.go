@@ -132,7 +132,7 @@ func playAudio(nextMediaURL <-chan string, quit chan struct{}) {
 
 	// Register the media end reached event with the event manager.
 	eventCallback := func(event vlc.Event, userData interface{}) {
-		close(quit)
+		log.Println("Reached end of media")
 	}
 
 	eventID, err := manager.Attach(vlc.MediaPlayerEndReached, eventCallback, nil)
