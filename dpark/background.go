@@ -10,7 +10,7 @@ import (
 )
 
 const backgroundName = "Background (DPark Radio)\t"
-const backgroundStreamURL = "https://cheetah.streemlion.com/dparkradiobackground?1628709340894"
+const backgroundStreamURL = "https://cheetah.streemlion.com/dparkradiobackground/;?"
 const backgroundInfoURL = "https://c5.radioboss.fm/w/nowplayinginfo?u=38&_="
 
 // const backgroundStreamURL = "https://str2b.openstream.co/578?aw_0_1st.collectionid=3127&aw_0_1st.publisherId=602"
@@ -25,7 +25,7 @@ func (b Background) Name() string {
 
 // StreamURL provides the current URL to stream audio
 func (b Background) StreamURL() string {
-	return backgroundStreamURL
+	return backgroundStreamURL + fmt.Sprintf("%d", time.Now().Unix())
 }
 
 func (b Background) RegisterForUpdates(updates chan models.TrackUpdate) tea.Cmd {
