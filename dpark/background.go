@@ -9,9 +9,11 @@ import (
 	"github.com/codegoalie/bubbletea-test/utils"
 )
 
-const backgroundName = "Background (DPark Radio)\t"
-const backgroundStreamURL = "https://cheetah.streemlion.com/dparkradiobackground/;?"
-const backgroundInfoURL = "https://c5.radioboss.fm/w/nowplayinginfo?u=38&_="
+const (
+	backgroundName      = "Background (DPark Radio)\t"
+	backgroundStreamURL = "https://listen.openstream.co/3127/audio?"
+	backgroundInfoURL   = "https://c5.radioboss.fm/w/nowplayinginfo?u=38&_="
+)
 
 // const backgroundStreamURL = "https://str2b.openstream.co/578?aw_0_1st.collectionid=3127&aw_0_1st.publisherId=602"
 
