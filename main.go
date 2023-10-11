@@ -14,7 +14,6 @@ import (
 	"github.com/codegoalie/bubbletea-test/models"
 	"github.com/codegoalie/bubbletea-test/sorcer"
 	"github.com/codegoalie/bubbletea-test/wdwnt"
-	"github.com/codegoalie/bubbletea-test/wonderland"
 	"github.com/codegoalie/golibnotify"
 )
 
@@ -69,13 +68,13 @@ var initialModel = model{
 	choices: models.Stations{
 		models.NewRemoteStation(&sorcer.Atmospheres{}),
 		models.NewRemoteStation(&dpark.Background{}),
-		models.NewRemoteStation(&wonderland.Park{}),
+		// models.NewRemoteStation(&wonderland.Park{}),
 		models.NewRemoteStation(&sorcer.Mocha{}),
 		models.NewRemoteStation(&wdwnt.Tunes{}),
 		models.NewRemoteStation(&sorcer.Main{}),
-		models.NewRemoteStation(&wonderland.Main{}),
+		// models.NewRemoteStation(&wonderland.Main{}),
 		models.NewRemoteStation(&sorcer.SpaDay{}),
-		models.NewRemoteStation(&wonderland.Mellow{}),
+		// models.NewRemoteStation(&wonderland.Mellow{}),
 		models.NewRemoteStation(&sorcer.Seasons{}),
 		models.NewRemoteStation(&dpark.Christmas{}),
 		models.NewRemoteStation(&dpark.Resort{}),
