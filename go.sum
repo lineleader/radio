@@ -8,8 +8,8 @@ github.com/charmbracelet/bubbletea v0.21.0/go.mod h1:GgmJMec61d08zXsOhqRC/AiOx4K
 github.com/charmbracelet/harmonica v0.2.0/go.mod h1:KSri/1RMQOZLbw7AHqgcBycp8pgJnQMYYT8QZRqZ1Ao=
 github.com/charmbracelet/lipgloss v0.5.0 h1:lulQHuVeodSgDez+3rGiuxlPVXSnhth442DATR2/8t8=
 github.com/charmbracelet/lipgloss v0.5.0/go.mod h1:EZLha/HbzEt7cYqdFPovlqy5FZPj0xFhg5SaqxScmgs=
-github.com/codegoalie/golibnotify v0.1.0 h1:klJMgE+elOsuTLxFvZN+0q1XFgYGr6aT5RyIBb2dZ0c=
-github.com/codegoalie/golibnotify v0.1.0/go.mod h1:+v6J4ss13rISdS08ENaHtBlxYOyIAPXVEUM4KyRYpoY=
+github.com/codegoalie/golibnotify v0.2.0 h1:435rE/re8zZCbMAMATPZ3Ggv0W1MndVcTaq6f2P8Fl0=
+github.com/codegoalie/golibnotify v0.2.0/go.mod h1:+v6J4ss13rISdS08ENaHtBlxYOyIAPXVEUM4KyRYpoY=
 github.com/containerd/console v1.0.3 h1:lIr7SlA5PxZyMV30bDW0MGbiOPXwc63yRuCP0ARubLw=
 github.com/containerd/console v1.0.3/go.mod h1:7LqA/THxQ86k76b8c/EMSiaJ3h1eZkMkXar0TQ1gf3U=
 github.com/davecgh/go-spew v1.1.0 h1:ZDRjVQ15GmhC3fiQ8ni8+OwkZQO4DARzQgrnXU1Liz8=

@@ -66,10 +66,12 @@ func waitForUpdates(updates chan models.TrackUpdate) tea.Cmd {
 
 var initialModel = model{
 	choices: models.Stations{
+		models.NewRemoteStation(&sorcer.Loopd{}),
 		models.NewRemoteStation(&sorcer.Atmospheres{}),
 		models.NewRemoteStation(&dpark.Background{}),
 		// models.NewRemoteStation(&wonderland.Park{}),
 		models.NewRemoteStation(&sorcer.Mocha{}),
+		// models.NewRemoteStation(&sorcer.PlanetD{}),
 		models.NewRemoteStation(&wdwnt.Tunes{}),
 		models.NewRemoteStation(&sorcer.Main{}),
 		// models.NewRemoteStation(&wonderland.Main{}),

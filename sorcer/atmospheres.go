@@ -9,7 +9,9 @@ import (
 )
 
 const atmospheresName = "Atmospheres (Sorcer Radio)"
-const atmospheresStreamURL = "https://samcloud.spacial.com/api/listen?sid=130157&m=sc&rid=273285"
+
+// const atmospheresStreamURL = "https://samcloud.spacial.com/api/listen?sid=130157&m=sc&rid=273285"
+const atmospheresStreamURL = "https://playerservices.streamtheworld.com/api/livestream-redirect/SP_R3956612_SC"
 
 var bigBandRegexp = regexp.MustCompile(`International Gateway2`)
 
