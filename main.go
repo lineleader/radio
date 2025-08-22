@@ -71,7 +71,6 @@ var initialModel = model{
 		models.NewRemoteStation(&dpark.Background{}),
 		// models.NewRemoteStation(&wonderland.Park{}),
 		models.NewRemoteStation(&sorcer.Mocha{}),
-		// models.NewRemoteStation(&sorcer.PlanetD{}),
 		models.NewRemoteStation(&wdwnt.Tunes{}),
 		models.NewRemoteStation(&sorcer.Main{}),
 		// models.NewRemoteStation(&wonderland.Main{}),
