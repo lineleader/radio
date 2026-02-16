@@ -15,7 +15,10 @@ const loopdName = "Loop'd (Sorcer Radio)\t"
 // https://playerservices.streamtheworld.com/api/livestream?mount=SP_R4852369&transports=http,hls&version=1.10&request.preventCache=1730918512938
 // request.preventCache look liks a unix timestamp
 // The sbmid in the loopdURL looks like a random UUID
-const loopdURL = "https://14223.live.streamtheworld.com/SP_R4852369.mp3?tdsdk=js-2.9&swm=false&pname=TDSdk&pversion=2.9&banners=none&burst-time=15&sbmid=12fcba0b-1e04-4cbc-c109-822b5ce95fcf"
+const (
+	loopdURL       = "https://14223.live.streamtheworld.com/SP_R4852369.mp3?tdsdk=js-2.9&swm=false&pname=TDSdk&pversion=2.9&banners=none&burst-time=15&sbmid=12fcba0b-1e04-4cbc-c109-822b5ce95fcf"
+	loopdStationID = "140481"
+)
 
 type Loopd struct{}
 
@@ -30,7 +33,7 @@ func (l Loopd) StreamURL() string {
 func (l Loopd) RegisterForUpdates(updates chan models.TrackUpdate) tea.Cmd {
 	return utils.SetupUpdateRegister(
 		l.Name(),
-		infoURL("140481", "d5791ac233c9aae42aac9342a2d6d70ec0886b5f"),
+		infoURL(loopdStationID, "d5791ac233c9aae42aac9342a2d6d70ec0886b5f"),
 		parseTrackInfo,
 		updates,
 	)
