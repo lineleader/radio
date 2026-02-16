@@ -3,7 +3,7 @@ module github.com/codegoalie/bubbletea-test
 go 1.22
 
 require (
-	github.com/adrg/libvlc-go/v3 v3.1.5
+	github.com/adrg/libvlc-go/v3 v3.1.6
 	github.com/charmbracelet/bubbles v0.11.0
 	github.com/charmbracelet/bubbletea v0.21.0
 	github.com/charmbracelet/lipgloss v0.5.0
