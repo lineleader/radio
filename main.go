@@ -13,7 +13,6 @@ import (
 	"github.com/codegoalie/bubbletea-test/dpark"
 	"github.com/codegoalie/bubbletea-test/models"
 	"github.com/codegoalie/bubbletea-test/sorcer"
-	"github.com/codegoalie/bubbletea-test/wdwnt"
 	"github.com/codegoalie/golibnotify"
 )
 
@@ -71,7 +70,7 @@ var initialModel = model{
 		models.NewRemoteStation(&dpark.Background{}),
 		// models.NewRemoteStation(&wonderland.Park{}),
 		models.NewRemoteStation(&sorcer.Mocha{}),
-		models.NewRemoteStation(&wdwnt.Tunes{}),
+		// models.NewRemoteStation(&wdwnt.Tunes{}),
 		models.NewRemoteStation(&sorcer.Main{}),
 		// models.NewRemoteStation(&wonderland.Main{}),
 		models.NewRemoteStation(&sorcer.SpaDay{}),
