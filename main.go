@@ -71,6 +71,7 @@ var initialModel = model{
 		// models.NewRemoteStation(&wonderland.Park{}),
 		models.NewRemoteStation(&sorcer.Mocha{}),
 		// models.NewRemoteStation(&wdwnt.Tunes{}),
+		models.NewRemoteStation(&sorcer.RopeDrop{}),
 		models.NewRemoteStation(&sorcer.Main{}),
 		// models.NewRemoteStation(&wonderland.Main{}),
 		models.NewRemoteStation(&sorcer.SpaDay{}),
